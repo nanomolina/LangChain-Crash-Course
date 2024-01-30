@@ -1,13 +1,16 @@
 import os
-from apikey import apikey
-import streamlit as st
-from langchain_openai import OpenAI
-from langchain.prompts import PromptTemplate
-from langchain.chains import LLMChain, SequentialChain
-from langchain.memory import ConversationBufferMemory
-from langchain_community.utilities.wikipedia import WikipediaAPIWrapper
 
-os.environ['OPENAI_API_KEY'] = apikey
+import streamlit as st
+from dotenv import load_dotenv
+from langchain.chains import LLMChain
+from langchain.memory import ConversationBufferMemory
+from langchain.prompts import PromptTemplate
+from langchain_community.utilities.wikipedia import WikipediaAPIWrapper
+from langchain_openai import OpenAI
+
+
+load_dotenv()
+openai_api_key = os.getenv('OPENAI_API_KEY')
 
 # App framework
 st.title("🦜🔗 LangChain crash course")
@@ -29,7 +32,7 @@ script_memory = ConversationBufferMemory(input_key="title", memory_key="chat_his
 
 
 # LLMS
-llm = OpenAI(temperature=0.9)
+llm = OpenAI(api_key=openai_api_key, temperature=0.9)
 title_chain = LLMChain(
     llm=llm,
     prompt=title_template,
